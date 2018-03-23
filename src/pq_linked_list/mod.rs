@@ -19,29 +19,22 @@ pub struct PriorityQueueLL<V, P>
 impl<V, P> PriorityQueueLL<V, P>
     where V: PartialOrd, P: Unsigned,
 {
-    // fn get_tail(&self) -> Option<&PqNode<V, P>> {
-    //     match &self.head {
-    //         &Some(ref head) => {
-    //             let mut curr = &head;
-    //             // while (curr.next).is_some() { curr = &curr.next.unwrap(); }
-    //             Some(&curr)
-    //         },
-    //         &None => None,
-    //     }
-    // }
+    fn get_insert_pos(&self, priority:P) -> (Option<Box<PqNode<V, P>>>,
+                                             Option<Box<PqNode<V, P>>>)
+    // fn get_insert_pos(&self, priority:P)
+    {
+        if self.head.is_none() { return (None, None); }
+        else {
+            let mut curr: &Option<Box<PqNode<V, P>>> = &self.head;
+            loop {
+                if curr.as_ref().unwrap().next.is_none() { break; }
+                if curr.as_ref().unwrap().next.as_ref().unwrap().value > curr.as_ref().unwrap().value { break; }
+                curr = &curr.as_ref().unwrap().next;
+            }
+            return (None, None);
+        }
 
-    // fn get_insert_pos(&self, priority:P) -> (Option<& PqNode<V, P>>,
-    //                                          Option<& PqNode<V, P>>) {
-    //     if self.head.is_some() {
-    //         let mut prev = self.head.unwrap();
-    //         while prev.next.is_some() {
-    //             prev = prev.next.unwrap();
-    //         }
-    //         (Some(&prev), None)
-    //     } else {
-    //         (None, None)
-    //     }
-    // }
+    }
 }
 
 impl<V, P> Queue<V, P> for PriorityQueueLL<V, P>
