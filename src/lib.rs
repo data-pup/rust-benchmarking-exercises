@@ -1,13 +1,14 @@
+extern crate num;
+
 pub mod pq_binary_heap;
 pub mod pq_linked_list;
 
 enum QueueType { MinQueue, MaxQueue }
 
-trait Queue<T> {
+trait Queue<V> {
     fn new(q_type:QueueType) -> Self;
-
-    // fn push(value:T);
-    // fn pop() -> T;
+    // fn push(value:V);
+    // fn pop() -> V;
     // fn length();
 }
 
