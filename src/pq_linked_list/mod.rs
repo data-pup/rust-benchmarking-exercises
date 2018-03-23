@@ -55,7 +55,12 @@ impl<'a, V, P> Queue<V, P> for PriorityQueueLL<'a, V, P>
     }
 
     fn push(&mut self, value:V, priority:P) {
-        self.head = Some(PqNode::new(value, priority, None));
+        match &mut self.head {
+            &mut Some(_) => {
+                return;
+            },
+            &mut None => self.head = Some(PqNode::new(value, priority, None)),
+        };
     }
 
     // fn pop() -> V { }
