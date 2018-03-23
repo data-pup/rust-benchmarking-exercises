@@ -46,6 +46,10 @@ heap property. In short, that for the whole tree, the value at each node is
 (>= or <=) than the values stored at each of its child nodes. Consequently,
 either the minimum or maximum value in the heap is always found at the top.
 
+To gloss over everything for now, a binary heap also seems like an intriguing
+enough problem to force me to get more understanding concerning how to
+build things using Rust's borrowing and ownership systems effectively.
+
 ### Builing a heap:
 
 WIP ...
