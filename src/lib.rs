@@ -3,13 +3,18 @@ extern crate num;
 pub mod pq_binary_heap;
 pub mod pq_linked_list;
 
+use std::cmp::PartialOrd;
+use num::Unsigned;
+
 enum QueueType { MinQueue, MaxQueue }
 
-trait Queue<V> {
+trait Queue<V, P>
+    where V: PartialOrd, P: Unsigned,
+{
     fn new(q_type:QueueType) -> Self;
-    // fn push(value:V);
-    // fn pop() -> V;
-    // fn length();
+    fn push(&mut self, value:V, priority:P);
+    // fn pop(&mut self) -> Option<V>;
+    fn length(&self) -> u32;
 }
 
 #[cfg(test)]
