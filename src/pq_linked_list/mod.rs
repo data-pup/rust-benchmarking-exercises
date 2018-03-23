@@ -58,7 +58,7 @@ mod tests {
     #[test]
     fn can_use_temp_length_fn() { // FIXUP FIXUP FIXUP
         let q: PriorityQueueLL<u32, u32> = PriorityQueueLL::new(QueueType::MaxQueue);
-        // let (actual_len, expected_len) = (q.length(), 1);
-        // assert_eq!(actual_len, expected_len);
+        let (actual_len, expected_len) = (q.length(), 1);
+        assert_eq!(actual_len, expected_len);
     }
 }
