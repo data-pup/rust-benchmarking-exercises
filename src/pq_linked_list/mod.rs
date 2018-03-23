@@ -61,14 +61,13 @@ impl<V, P> Queue<V, P> for PriorityQueueLL<V, P>
 
     /// FIXUP needed.
     fn push(&mut self, value:V, priority:P) {
-        // let parent: &mut Option<Box<PqNode<V, P>>> = self.get_insert_pos(&priority);
-        // match parent {
-        //     &mut Some(ref mut prev) => {
+        let parent:&Option<Box<PqNode<V, P>>> = self.get_insert_pos(&priority);
+        match parent {
+            &Some(ref prev) => {  }
         //         prev.next = Some(Box::new(PqNode::new(value, priority, None)));
-        //     }
-        //     &mut None => {  }
-        //     // self.head = Some(Box::new(PqNode::new(value, priority, None))),
-        // };
+            &None => {  }
+            // self.head = Some(Box::new(PqNode::new(value, priority, None))),
+        };
     }
 
     // fn pop() -> V { }
