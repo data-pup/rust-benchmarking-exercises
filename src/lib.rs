@@ -9,7 +9,7 @@ use num::Unsigned;
 enum QueueType { MinQueue, MaxQueue }
 
 trait Queue<V, P>
-    where V: PartialOrd, P: Unsigned,
+    where P: PartialOrd, P: Unsigned
 {
     fn new(q_type:QueueType) -> Self;
     fn push(&mut self, value:V, priority:P);

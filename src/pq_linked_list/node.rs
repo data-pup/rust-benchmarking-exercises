@@ -6,16 +6,15 @@ use num::Unsigned;
 /// P type represents the kind of unsigned value that is being used to denote
 /// the priority of the node.
 pub struct PqNode<V, P>
-    where V: PartialOrd, P: Unsigned,
+    where P: PartialOrd, P: Unsigned
 {
     pub value:V,
     pub priority:P,
-    // pub next:Option<&'a PqNode<'a, V, P>>,
     pub next:Option<Box<PqNode<V, P>>>,
 }
 
 impl<'a, V, P> PqNode<V, P>
-    where V: PartialOrd, P: Unsigned,
+    where P: PartialOrd, P: Unsigned
 {
     pub fn new(value:V, priority:P, next:Option<Box<PqNode<V, P>>>) -> Self {
         PqNode { value, priority, next }
