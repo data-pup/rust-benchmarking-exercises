@@ -9,14 +9,14 @@ use {Queue, QueueType};
 mod node;
 use pq_linked_list::node::PqNode;
 
-pub struct PriorityQueueLL<'a, V: 'a, P: 'a>
+pub struct PriorityQueueLL<V, P>
     where V: PartialOrd, P: Unsigned,
 {
-    pub head:Option<PqNode<'a, V, P>>,
+    pub head:Option<Box<PqNode<V, P>>>,
     queue_type: QueueType,
 }
 
-impl<'a, V, P> PriorityQueueLL<'a, V, P>
+impl<V, P> PriorityQueueLL<V, P>
     where V: PartialOrd, P: Unsigned,
 {
     // fn get_tail(&self) -> Option<&PqNode<V, P>> {
@@ -44,7 +44,7 @@ impl<'a, V, P> PriorityQueueLL<'a, V, P>
     // }
 }
 
-impl<'a, V, P> Queue<V, P> for PriorityQueueLL<'a, V, P>
+impl<V, P> Queue<V, P> for PriorityQueueLL<V, P>
     where V: PartialOrd, P: Unsigned,
 {
     fn new(q_type:QueueType) -> Self {
@@ -55,27 +55,19 @@ impl<'a, V, P> Queue<V, P> for PriorityQueueLL<'a, V, P>
     }
 
     fn push(&mut self, value:V, priority:P) {
-        match &mut self.head {
-            &mut Some(_) => {
-                return;
-            },
-            &mut None => self.head = Some(PqNode::new(value, priority, None)),
+        match self.head {
+            Some(ref mut head) =>
+                head.next = Some(Box::new(PqNode::new(value, priority, None))),
+            None => self.head = Some(Box::new(PqNode::new(value, priority, None))),
         };
     }
 
     // fn pop() -> V { }
 
     fn length(&self) -> u32 {
-        match &self.head {
-            &Some(ref head) => {
-                let (mut i, mut curr) = (1 as u32, head);
-                while (curr.next).is_some() {
-                    i += 1;
-                    curr = &curr.next.unwrap();
-                }
-                return i;
-            },
-            &None => 0 as u32,
+        match self.head {
+            Some(ref head) => head.length(),
+            None => 0 as u32,
         }
     }
 }
