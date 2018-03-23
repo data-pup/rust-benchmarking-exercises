@@ -20,7 +20,8 @@ impl<V, P> PriorityQueueLL<V, P>
     where P: PartialOrd, P: Unsigned
 {
     /// This private function is used to find the insert position for a new node.
-    fn get_insert_pos(&self, priority:&P) -> &Option<Box<PqNode<V, P>>> {
+    /// TEMP TEMP TEMP: This needs to return a mutable object. (Next may need to be changed.)
+    fn temp(&self, priority:&P) -> &Option<Box<PqNode<V, P>>> {
         // This closure helps determine if the insert position has been found.
         let should_continue = |curr_priority:&P, priority:&P| -> bool {
             match self.queue_type {
@@ -46,6 +47,12 @@ impl<V, P> PriorityQueueLL<V, P>
             curr = &curr_node.next; // Otherwise, continue to the next node.
         }   // After the loop breaks, return the given optional pointer.
         return curr;
+    }
+
+    // fn get_insert_pos(&mut self, priority:&P) -> &mut Option<Box<PqNode<V, P>>> {
+    /// This private function is used to find the insert position for a new node.
+    fn get_insert_pos(&mut self, priority:&P) {
+        // ???
     }
 }
 
