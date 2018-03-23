@@ -13,17 +13,10 @@ pub struct PqNode<'a, V: 'a, P: 'a>
     pub next:Option<&'a PqNode<'a, V, P>>,
 }
 
-impl<'a, V: 'a, P: 'a> PqNode<'a, V, P>
+impl<'a, V, P> PqNode<'a, V, P>
     where V: PartialOrd, P: Unsigned,
 {
-    pub fn new(value:V, priority:P, next:Option<&'a PqNode<'a, V, P>>) -> Self {
+    pub fn new(value:V, priority:P, next:Option<&'a PqNode<V, P>>) -> Self {
         PqNode { value, priority, next }
-    }
-
-    pub fn get_tail(&self) -> Option<&PqNode<'a, V, P>> {
-        match self.next {
-            Some(next) => next.get_tail(),
-            None => Some(&self),
-        }
     }
 }

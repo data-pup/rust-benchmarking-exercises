@@ -19,9 +19,32 @@ pub struct PriorityQueueLL<'a, V: 'a, P: 'a>
 impl<'a, V, P> PriorityQueueLL<'a, V, P>
     where V: PartialOrd, P: Unsigned,
 {
+    // fn get_tail(&self) -> Option<&PqNode<V, P>> {
+    //     match &self.head {
+    //         &Some(ref head) => {
+    //             let mut curr = &head;
+    //             // while (curr.next).is_some() { curr = &curr.next.unwrap(); }
+    //             Some(&curr)
+    //         },
+    //         &None => None,
+    //     }
+    // }
+
+    // fn get_insert_pos(&self, priority:P) -> (Option<& PqNode<V, P>>,
+    //                                          Option<& PqNode<V, P>>) {
+    //     if self.head.is_some() {
+    //         let mut prev = self.head.unwrap();
+    //         while prev.next.is_some() {
+    //             prev = prev.next.unwrap();
+    //         }
+    //         (Some(&prev), None)
+    //     } else {
+    //         (None, None)
+    //     }
+    // }
 }
 
-impl<'a, V: 'a, P: 'a> Queue<V, P> for PriorityQueueLL<'a, V, P>
+impl<'a, V, P> Queue<V, P> for PriorityQueueLL<'a, V, P>
     where V: PartialOrd, P: Unsigned,
 {
     fn new(q_type:QueueType) -> Self {
@@ -32,14 +55,23 @@ impl<'a, V: 'a, P: 'a> Queue<V, P> for PriorityQueueLL<'a, V, P>
     }
 
     fn push(&mut self, value:V, priority:P) {
-        let new_node = PqNode::new(value, priority, None);
-        self.head = Some(new_node);
+        self.head = Some(PqNode::new(value, priority, None));
     }
 
     // fn pop() -> V { }
 
-    fn length(&self) -> u32 { // FIXUP FIXUP FIXUP
-        return 1;
+    fn length(&self) -> u32 {
+        match &self.head {
+            &Some(ref head) => {
+                let (mut i, mut curr) = (1 as u32, head);
+                while (curr.next).is_some() {
+                    i += 1;
+                    curr = &curr.next.unwrap();
+                }
+                return i;
+            },
+            &None => 0 as u32,
+        }
     }
 }
 
@@ -56,9 +88,12 @@ mod tests {
     }
 
     #[test]
-    fn can_use_temp_length_fn() { // FIXUP FIXUP FIXUP
-        let q: PriorityQueueLL<u32, u32> = PriorityQueueLL::new(QueueType::MaxQueue);
-        let (actual_len, expected_len) = (q.length(), 1);
-        assert_eq!(actual_len, expected_len);
+    fn length_test() {
+        let mut expected_len:u32 = 0;
+        let mut q = PriorityQueueLL::new(QueueType::MaxQueue);
+        assert_eq!(q.length(), expected_len);
+        q.push(1 as u32, 1 as u32);
+        expected_len += 1;
+        assert_eq!(q.length(), expected_len);
     }
 }
