@@ -49,11 +49,33 @@ impl<V, P> PriorityQueueLL<V, P>
         return curr;
     }
 
-    // fn get_insert_pos(&mut self, priority:&P) -> &mut Option<Box<PqNode<V, P>>> {
-    /// This private function is used to find the insert position for a new node.
-    fn get_insert_pos(&mut self, priority:&P) {
-        // ???
+    /// This helper function is used to determine whether to progress further
+    /// when identifying an insert position, and whether or not a new node
+    /// should be placed at the head of the queue.
+    fn should_continue(&self, priority:&P, next_priority:&P) -> bool {
+        return match self.queue_type {
+            QueueType::MaxQueue => priority > next_priority,
+            QueueType::MinQueue => priority < next_priority,
+        }
     }
+
+    /// Returns true if a new node with the given priority should be the new
+    /// head for the given type of priority queue.
+    fn is_new_head(&self, priority:&P) -> bool {
+        if self.head.is_none() { return true; }
+        else {
+            let head_node = self.head.as_ref().unwrap();
+            let head_priority = &head_node.priority;
+            let should_be_head = !self.should_continue(priority, head_priority);
+            return should_be_head;
+        }
+    }
+
+    // fn get_insert_pos(&self, priority:&P) -> &mut Option<Box<PqNode<V, P>>> {
+    // // This private function is used to find the insert position for a new node.
+    // // fn get_insert_pos(&mut self, priority:&P) {
+    //     return &mut self.head;
+    // }
 }
 
 impl<V, P> Queue<V, P> for PriorityQueueLL<V, P>
@@ -68,13 +90,19 @@ impl<V, P> Queue<V, P> for PriorityQueueLL<V, P>
 
     /// FIXUP needed.
     fn push(&mut self, value:V, priority:P) {
-        let parent:&Option<Box<PqNode<V, P>>> = self.get_insert_pos(&priority);
-        match parent {
-            &Some(ref prev) => {  }
-        //         prev.next = Some(Box::new(PqNode::new(value, priority, None)));
-            &None => {  }
-            // self.head = Some(Box::new(PqNode::new(value, priority, None))),
+        let parent:&mut Option<Box<PqNode<V, P>>> = match self.is_new_head(&priority) {
+            true => &mut None,
+            false => &mut self.head,
         };
+        // let parent:&mut Option<Box<PqNode<V, P>>> = self.get_insert_pos(&priority);
+        // match parent {
+        //     &mut Some(ref mut prev) => {
+        //         prev.next = Some(Box::new(PqNode::new(value, priority, None)));
+        //     },
+        //     &mut None => {
+        //         self.head = Some(Box::new(PqNode::new(value, priority, None)));
+        //     },
+        // };
     }
 
     // fn pop() -> V { }
