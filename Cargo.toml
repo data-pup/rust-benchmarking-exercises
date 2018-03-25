@@ -2,6 +2,3 @@
 name = "rust-benchmarking-exercise"
 version = "0.1.0"
 authors = ["data-pup <kevinmartinucr@gmail.com>"]
-
-[dependencies]
-num = "0.1.42"
