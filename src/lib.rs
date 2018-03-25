@@ -1,6 +1,6 @@
 pub mod priority_queue_ll;
 
-enum QueueType { MinQueue, MaxQueue }
+pub enum QueueType { MinQueue, MaxQueue }
 
 trait Queue<V, P>
     where P: PartialOrd

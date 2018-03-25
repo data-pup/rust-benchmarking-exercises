@@ -13,7 +13,7 @@ struct LlNode<V, P>
 }
 
 /// Priority Queue, using a linked list implementation.
-struct PriorityQueueLinkedList<V, P>
+pub struct PriorityQueueLinkedList<V, P>
     where P:PartialOrd
 {
     head:Option<Box<LlNode<V, P>>>,
@@ -40,6 +40,7 @@ impl<V, P> Queue<V, P> for PriorityQueueLinkedList<V, P>
     fn pop(&mut self) -> Option<V> {
         None // FIXUP
     }
+
     fn length(&self) -> u32 {
         0 // FIXUP
     }
@@ -52,7 +53,7 @@ mod tests {
     use priority_queue_ll::PriorityQueueLinkedList;
 
     #[test]
-    fn create_empty_queues() {
+    fn create_empty_queues_without_exception() {
         let min_q:PriorityQueueLinkedList<u32, u32> =
             PriorityQueueLinkedList::new(QueueType::MinQueue);
         let max_q:PriorityQueueLinkedList<u32, u32> =
