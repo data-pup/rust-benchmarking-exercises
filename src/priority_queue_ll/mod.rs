@@ -29,12 +29,33 @@ impl<V, P> PQueueLl<V, P>
             queue_type:queue_type,
         }
     }
+
+    // Returns true if a should come before b in this kind of queue.
+    fn sort(&self, a:&P, b:&P) -> bool {
+        match self.queue_type {
+            QueueType::MaxQueue => a >= b,
+            QueueType::MinQueue => a <= b,
+        }
+    }
 }
 
 impl<V, P> Queue<V, P> for PQueueLl<V, P>
     where P: PartialOrd
 {
     fn push(&mut self, value:V, priority:P) {
+        let mut new_node = LlNode { value:value, priority:priority, next:None };
+
+        // Check whether a head exists.
+        if self.head.is_none() {
+            self.head = Some(Box::new(new_node));
+            return;
+        }
+
+        let head_priority = &self.head.as_ref().unwrap().priority;
+        let head_stays = self.sort(head_priority, &new_node.priority);
+        if !head_stays {
+            self.head = Some(Box::new(new_node));
+        }
     }
 
     fn pop(&mut self) -> Option<V> {
