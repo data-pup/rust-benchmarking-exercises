@@ -16,10 +16,12 @@ pub struct PqNode<V, P>
 impl<'a, V, P> PqNode<V, P>
     where P: PartialOrd, P: Unsigned
 {
+    /// Creates a new node containing the given value and priority.
     pub fn new(value:V, priority:P, next:Option<Box<PqNode<V, P>>>) -> Self {
         PqNode { value, priority, next }
     }
 
+    /// Returns the length of the linked list in the form of a u32 integer.
     pub fn length(&self) -> u32 {
         match &self.next {
             &Some(ref next) => next.length() + 1,

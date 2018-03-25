@@ -22,6 +22,7 @@ pub struct PriorityQueueLL<V, P>
 impl<V, P> Queue<V, P> for PriorityQueueLL<V, P>
     where P: PartialOrd, P: Unsigned
 {
+    /// Creates a new priority queue.
     fn new(q_type:QueueType) -> Self {
         PriorityQueueLL {
             head: None,
@@ -29,6 +30,7 @@ impl<V, P> Queue<V, P> for PriorityQueueLL<V, P>
         }
     }
 
+    /// Pushes a new value-priority pair into the correct place in the queue.
     fn push(&mut self, value:V, priority:P) {
         match self.is_new_head(&priority) {
             false => {
@@ -45,7 +47,11 @@ impl<V, P> Queue<V, P> for PriorityQueueLL<V, P>
         }
     }
 
-    // fn pop() -> V { }
+    // PUSH Notes:
+    // 1. Empty queue (self.head -> None)   =>   New node is self.head
+    // 2. Check that self.head.priority more important than new priority.
+    //      If not, new node is new head, set next member and self.head accordingly.
+    // 3. Traverse until the correct next node, or tail is found.
 
     fn length(&self) -> u32 {
         match self.head {
