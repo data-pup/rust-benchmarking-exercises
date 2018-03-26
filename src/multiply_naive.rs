@@ -1,7 +1,7 @@
 use ndarray::Array;
 use ndarray::Array2;
 
-use num_traits::Zero;
+use num_traits::Num;
 use std::clone::Clone;
 
 type Matrix<T> = Array2<T>;
@@ -11,7 +11,7 @@ pub fn hello_world() -> &'static str {
 }
 
 pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
-    where T: Clone + Zero
+    where T: Clone + Num
 {
     let c_dims = get_output_dims(&a, &b)?;
     let mut c = Array::<T, _>::zeros(c_dims);
