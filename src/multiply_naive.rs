@@ -17,8 +17,9 @@ pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String> {
     unimplemented!()
 }
 
+#[cfg(test)]
 mod tests {
-    use ndarray::prelude::*;
+    use ndarray::Array;
     use multiply_naive::multiply;
     use multiply_naive::test_cases;
 
@@ -43,8 +44,9 @@ mod tests {
     }
 }
 
+#[allow(dead_code)]
 mod test_cases {
-    pub type DimensionPair = ((usize, usize), (usize, usize));
+    type DimensionPair = ((usize, usize), (usize, usize));
     pub static MISMATCHED_DIMENSIONS:[DimensionPair; 2] = [
         ((1, 2), (1, 2)),
         ((2, 1), (2, 2)),
