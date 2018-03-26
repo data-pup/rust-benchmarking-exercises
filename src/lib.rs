@@ -1,4 +1,4 @@
-#[macro_use]
+#[macro_use(array)]
 extern crate ndarray;
 
 pub mod multiply_naive;

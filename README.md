@@ -106,6 +106,9 @@ ecosystem for me is the robust dependency management tooling. Having
 this ability in a systems language like Rust is really neat, and pulling in
 extra package dependencies was very straightfoward.
 
+One neat feature that I enjoyed discovering was the ability to enable macros
+provided by an external crate, using the `#[macro_use]` attribute.
+
 ### Problems Encountered
 
 Learning more about how to compose `Option` types and `Result` types required
