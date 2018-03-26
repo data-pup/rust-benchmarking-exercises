@@ -50,6 +50,52 @@ algorithm.
 
 Once this is built, we will benchmark the performance of the two alternatives.
 
+## Implementation
+
+Before we go any further, let's cover what simple matrix multiplication looks
+like, and then cover an optimized version of the process.
+
+### Simple Matrix Multiplication
+
+The formal defitions for matrix multiplication can use somewhat terse
+notation, so if you are unfamiliar it might be better to start with
+an example
+
+Let's say we have two matrices, `a` and `b`, such that:
+
+```
+a = [0, 1]    b = [0, 1, 2]
+    [1, 2]        [2, 4, 8]
+    [2  3]
+```
+
+In this case, `c = a * b` would look like:
+
+```
+3x2 matrix * 2x3 matrix = 3x3 matrix
+c = [ (0*0 + 1*2), (0*1 + 1*4), (0*2 + 1*8) ]
+    [ (1*0 + 2*2), (1*1 + 2*4), (1*2 + 2*8) ]
+    [ (2*0 + 3*2), (2*1 + 3*4), (2*2 + 3*8) ]
+
+c = [2, 4,  8 ]
+    [4, 9,  18]
+    [6, 14, 28]
+```
+
+The idea is that we are multiplying elements in the rows in `a` with the
+columns in `b`, and summing these products to find the value in a cell of `c`.
+An important caveat we will need to remember is the rule that we can only
+multiply two matrices of dimensions `m x n` and `n x o`. In other words,
+`a` must have a number of columns equal to the number of rows in `b`.
+
+This will end up being a slow operation because of the large number of reads
+involved. Each element in both `a` and `b` will need to be referenced a
+number of times. We will cover the optimized version next.
+
+### Fast Matrix Multiplication
+
+To do ...
+
 ## Lessons, Discoveries
 
 ### Problems Encountered

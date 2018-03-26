@@ -1,4 +1,4 @@
 [package]
-name = "rust-benchmarking-exercise"
+name = "rust_benchmarking_exercise"
 version = "0.1.0"
 authors = ["data-pup <kevinmartinucr@gmail.com>"]
