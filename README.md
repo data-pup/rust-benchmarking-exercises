@@ -98,6 +98,14 @@ To do ...
 
 ## Lessons, Discoveries
 
+### Crates Ecosystem
+
+For matrix multiplication, I found a nice crate online that offered
+n-dimensional matrices. One especially bright spot in the JavaScript
+ecosystem for me is the robust dependency management tooling. Having
+this ability in a systems language like Rust is really neat, and pulling in
+extra package dependencies was very straightfoward.
+
 ### Problems Encountered
 
 Learning more about how to compose `Option` types and `Result` types required
