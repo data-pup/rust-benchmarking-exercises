@@ -35,28 +35,29 @@ Ideally, we would like to compare the performance of alternative solutions to
 a computional problem and, let's be honest, we are really here to make fancy
 graphs, right?
 
-For the sake of benchmarking, we will compare runtime of some common operations
-on different data structures. This will also function as a convenient excuse
-to build some neat data structures.
+### Matrix Multiplication
 
-### What is a heap?
+Matrix multiplication is a computationally intensive process, involving a
+large number of operations to produce a result. There are some well known
+optimizations to this process that we can implement, and compare against
+the naive matrix multiplication algorithm.
 
-A binary heap is a binary tree implemented such that the tree satifies the
-heap property. In short, that for the whole tree, the value at each node is
-(>= or <=) than the values stored at each of its child nodes. Consequently,
-either the minimum or maximum value in the heap is always found at the top.
+We will write a file that will open two files, read the contents of each
+file as a matrix of integers, multiply the two matrices, and either store
+the result in a new file, or print the results to the terminal output.
 
-To gloss over everything for now, a binary heap also seems like an intriguing
-enough problem to force me to get more understanding concerning how to
-build things using Rust's borrowing and ownership systems effectively.
-
-### Builing a heap:
-
-WIP ...
+Two matrix multiplication logic modules will be implemented, and we will
+benchmark the performance of the two alternatives.
 
 ## Lessons, Discoveries
 
-...
+### Problems Encountered
+
+Learning more about how to compose `Option` types and `Result` types required
+doing some further research. At this point in my Rust learning process, I was
+finding myself still fighting against the borrow checker, and decided this
+meant I should familiarize myself with common idiomatic error handling
+patterns in Rust.
 
 ### Verify Project Correctness
 
