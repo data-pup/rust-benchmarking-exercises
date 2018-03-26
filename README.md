@@ -42,12 +42,13 @@ large number of operations to produce a result. There are some well known
 optimizations to this process that we can implement, and compare against
 the naive matrix multiplication algorithm.
 
-We will write a file that will open two files, read the contents of each
-file as a matrix of integers, multiply the two matrices, and either store
-the result in a new file, or print the results to the terminal output.
+We will write a small matrix multiplication library, that accepts two matrices
+filled with numbers, and produces the product in the form of a new matrix.
+Two matrix multiplication logic modules will be implemented, one using a
+naive implementation, and another using an optimized matrix multiplication
+algorithm.
 
-Two matrix multiplication logic modules will be implemented, and we will
-benchmark the performance of the two alternatives.
+Once this is built, we will benchmark the performance of the two alternatives.
 
 ## Lessons, Discoveries
 
