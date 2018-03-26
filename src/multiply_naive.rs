@@ -1,4 +1,8 @@
+use ndarray::Array;
 use ndarray::Array2;
+
+use num_traits::Zero;
+use std::clone::Clone;
 
 type Matrix<T> = Array2<T>;
 
@@ -6,15 +10,21 @@ pub fn hello_world() -> &'static str {
     return "Hello World!";
 }
 
-pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String> {
+pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
+    where T: Clone + Zero
+{
+    let c_dims = get_output_dims(&a, &b)?;
+    let mut c = Array::<T, _>::zeros(c_dims);
+    unimplemented!()
+}
+
+fn get_output_dims<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<(usize, usize), String> {
     let (m_a, n_a) = a.dim();
     let (n_b, o_b) = b.dim();
-    let (c_height, c_width) = match n_a == n_b {
-        true => (m_a, o_b),
-        false => return Err("Incorrect matrix dimensions given!".to_owned()),
-    };
-
-    unimplemented!()
+    match n_a == n_b {
+        true => Ok((m_a, o_b)),
+        false => Err("Incorrect matrix dimensions given!".to_owned()),
+    }
 }
 
 #[cfg(test)]
