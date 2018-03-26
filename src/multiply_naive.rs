@@ -20,14 +20,17 @@ pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String> {
 mod tests {
     use ndarray::prelude::*;
     use multiply_naive::multiply;
+    use multiply_naive::test_cases;
 
     #[test]
     fn mismatched_dims_causes_error() {
-        let dims = (2, 3);
-        let a = Array::<u32, _>::zeros(dims);
-        let b = Array::<u32, _>::zeros(dims);
-        let res = multiply(&a, &b);
-        assert!(res.is_err(), "Invalid dimensions should not be accepted!");
+        for curr_case in test_cases::MISMATCHED_DIMENSIONS.iter() {
+            let &(a_dims, b_dims) = curr_case;
+            let a = Array::<u32, _>::zeros(a_dims);
+            let b = Array::<u32, _>::zeros(b_dims);
+            let res = multiply(&a, &b);
+            assert!(res.is_err(), "Invalid dimensions should not be accepted!");
+        }
     }
 
     #[test]
@@ -38,4 +41,12 @@ mod tests {
                        [2, 3]];
         let c = multiply(&a, &b);
     }
+}
+
+mod test_cases {
+    pub type DimensionPair = ((usize, usize), (usize, usize));
+    pub static MISMATCHED_DIMENSIONS:[DimensionPair; 2] = [
+        ((1, 2), (1, 2)),
+        ((2, 1), (2, 2)),
+    ];
 }
