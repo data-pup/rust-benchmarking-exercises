@@ -185,6 +185,59 @@ In the next section, we will build an optimized matrix multiplication algorithm.
 We will next implement the Strassen algorithm, and benchmark this implementation
 against the naive implementation that we build in the previous section.
 
+### Overview
+
+The Strassen algorithm takes advantage of the fact that it is possible to
+represent the product of two 2x2 matrices using only 7 multiplication
+operations rather than the 8 needed if performing the operation naively.
+
+If we have input matrices A, B, such that:
+
+```
+A = [A_11, A_12]    B = [B_11, B_12]
+    [A_21, A_22]        [B_21, B_22]
+```
+
+Then the naive method to calculate C would look like this:
+
+```
+C = [A_11*B_11 + A_12*B_21,  A_11*B_12 + A_12*B_22]
+    [A_21*B_11 + A_22*B_21,  A_21*B_12 + A_22*B_22]
+```
+
+Instead, we can define 7 new matrices using the inputs:
+
+```
+M_1 = (A_11 + A_22) * (B_11 + B_22)
+M_2 = (A_21 + A_22) * B_11
+M_3 = A_11 * (B_12 - B_22)
+M_4 = A_22 * (B_21 - B_11)
+M_5 = (A_11 + A_12) * B_22
+M_6 = (A_21 - A_11) * (B_11 + B_12)
+M_7 = (A_12 - A_22) * (B_21 + B_22)
+```
+
+Using these matrices, we can represent C like this:
+
+```
+C_11 = M_1 + M_4 - M_5 + M_7
+C_12 = M_3 + M_5
+C_21 = M_2 + M_4
+C_22 = M_1 - M_2 + M_3 + M_6
+```
+
+Note that only 7 multiplication operations are needed to generate the `M_n`
+matrices, and these are only used in addition and subtraction operations when
+calculating the results in C.
+
+This process is performed recursively on the arrays, which means that we require
+the matrices A and B to be square, and have height and width equal to a power
+of two. If the input matrices do not match these conditions, they will be
+padded with zeros.
+
+Technically, this algorithm can be implemented to avoid these requirements, but
+for simplicity we will follow the padding rule.
+
 ## Lessons, Discoveries
 
 ### The ? Operator
