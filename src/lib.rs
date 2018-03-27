@@ -4,3 +4,4 @@ extern crate num_traits;
 
 pub mod multiply_naive;
 pub mod multiply_fast;
+mod multiply_utils;
