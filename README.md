@@ -50,12 +50,12 @@ algorithm.
 
 Once this is built, we will benchmark the performance of the two alternatives.
 
-## Implementation
+## Naive Implementation of Matrix Multiplication
+
+### Overview
 
 Before we go any further, let's cover what simple matrix multiplication looks
 like, and then cover an optimized version of the process.
-
-### Simple Matrix Multiplication
 
 The formal defitions for matrix multiplication can use somewhat terse
 notation, so if you are unfamiliar it might be better to start with
@@ -92,9 +92,98 @@ This will end up being a slow operation because of the large number of reads
 involved. Each element in both `a` and `b` will need to be referenced a
 number of times. We will cover the optimized version next.
 
-### Fast Matrix Multiplication
+### Implementation
 
-To do ...
+To build this, I first started by writing the logic used to find the dimensions
+of the output matrix. I used the `ndarray` crate in my project, which provides
+some useful classes to represent various n-dimensional arrays generically.
+These objects provide a `.dim()` method, which returns a tuple of `usize` values
+that represent the size of the matrix.
+
+Using this, I implemented a function to first check the inputs' dimensions:
+
+```rust
+pub type MatrixDimensions = (usize, usize);
+
+fn get_output_dims(a:MatrixDimensions, b:MatrixDimensions)
+    -> Result<MatrixDimensions, String>
+{
+    let (a_height, a_width) = a;
+    let (b_height, b_width) = b;
+    match a_width == b_height {
+        true => Ok((a_height, b_width)),
+        false => Err("Incorrect matrix dimensions given!".to_owned()),
+    }
+}
+```
+
+This is used by a function that then initializes an output matrix filled with
+zeros, assuming this function returned an `Ok` result.
+
+```rust
+pub type Matrix<T> = Array2<T>;
+pub type MatrixDimensions = (usize, usize);
+
+pub fn init_output_matrix<T>(a:&Matrix<T>, b:&Matrix<T>)
+    -> Result<Matrix<T>, String>
+    where T: Clone + Num
+{
+    let (a_dims, b_dims) = (a.dim(), b.dim());
+    let dimensions:MatrixDimensions = get_output_dims(a_dims, b_dims)?;
+    let m:Matrix<T> = Array::<T, _>::zeros(dimensions);
+    return Ok(m);
+}
+
+```
+
+Once I had initialized an output matrix, I just needed to calculate the value
+of each cell in the matrix, using its position `(i, j)` to determine the
+corresponding slices in `a` and `b`. The code to determine a cell value looked
+like this:
+
+```rust
+fn get_curr_cell_value<T>((i, j):MatrixPosition, a:&Matrix<T>, b:&Matrix<T>)
+    -> Result<T, String>
+    where T: Clone + Num + NumOps
+{
+    let (a_row, b_col) = (a.slice(s![i, ..]), b.slice(s![.., j]));
+    let elem_count = match a_row.len() == b_col.len() {
+        true => a_row.len(),
+        false => return Err("Dimension error while multiplying slices.".to_owned()),
+    };
+    let result = (0..elem_count)
+        .map(|index| a_row[index].clone() * b_col[index].clone())
+        .fold(T::zero(), |acc, elem| acc + elem);
+    Ok(result)
+}
+```
+
+This is used by the public `multiply(..)` method, which assigns a value to each
+position in the output like so:
+
+```rust
+pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
+    where T: Clone + Num + NumOps
+{
+    let mut c:Matrix<T> = init_output_matrix(&a, &b)?;
+    for i in 0..c.rows() {
+        for j in 0..c.cols() {
+            c[[i, j]] = get_curr_cell_value((i, j), a, b)?;
+        }
+    }
+    Ok(c)
+}
+```
+
+There are some implementation details that could look different, and could
+certainly be optimized further, but this is a learning project after all, and
+we can give things another go with the next implementation we are tackling.
+In the next section, we will build an optimized matrix multiplication algorithm.
+
+## The Strassen Algorithm
+
+We will next implement the Strassen algorithm, and benchmark this implementation
+against the naive implementation that we build in the previous section.
 
 ## Lessons, Discoveries
 
