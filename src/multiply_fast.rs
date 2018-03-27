@@ -28,9 +28,12 @@ fn init_strassen_output_matrix<T>(a:&Matrix<T>, b:&Matrix<T>)
         false => return Err("Input matrices must be of same size!".to_owned()),
     };
 
-    let dimensions:MatrixDimensions = (size, size);
-    let m:Matrix<T> = Array::<T, _>::zeros(dimensions);
-    Ok(m)
+    let size_log2 = (size as f64).log2();
+    let size_is_pow_of_2 = size_log2 == size_log2.floor();
+    match size_is_pow_of_2 {
+        true => Ok(Array::<T, _>::zeros((size, size))),
+        false => Err("Dimensions of inputs must be a power of 2!".to_owned()),
+    }
 }
 
 #[cfg(test)]
