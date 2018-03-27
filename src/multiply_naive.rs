@@ -16,7 +16,7 @@ pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
     let mut c:Matrix<T> = init_output_matrix(&a, &b)?;
     for i in 0..c.rows() {
         for j in 0..c.cols() {
-            c[[i, j]] = get_curr_cell_value((i, i), a, b)?;
+            c[[i, j]] = get_curr_cell_value((i, j), a, b)?;
         }
     }
     Ok(c)
@@ -91,18 +91,18 @@ mod tests {
     #[test]
     fn multiply_test() {
         let a = array![
+            [1, 0],
             [0, 1],
-            [1, 2],
-            [2, 3],
+            [1, 1],
         ];
         let b = array![
             [0, 1, 2],
             [2, 4, 8],
         ];
         let expected_c = array![
+            [0, 1, 2 ],
             [2, 4, 8 ],
-            [4, 9, 18],
-            [6, 14, 28],
+            [2, 5, 10],
         ];
         let actual_c = multiply(&a, &b).unwrap();
         assert_eq!(actual_c, expected_c);
