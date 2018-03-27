@@ -11,7 +11,6 @@ pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
     where T: Clone + Num + NumOps
 {
     unimplemented!();
-
 }
 
 // Initializes an output matrix for matrix multiplication following the
@@ -37,9 +36,17 @@ fn init_strassen_output_matrix<T>(a:&Matrix<T>, b:&Matrix<T>)
 #[cfg(test)]
 mod tests {
     use multiply_fast::*;
+    use self::test_cases::*;
+
     #[test]
-    fn placeholder() {
-        unimplemented!("Test not implemented yet!");
+    fn invalid_dims_are_not_accepted() {
+        for curr_test in INVALID_DIMENSIONS.iter() {
+            let &InvalidDimensionsTestCase {desc, a_dims, b_dims} = curr_test;
+            let a = Array::<u32, _>::zeros(a_dims);
+            let b = Array::<u32, _>::zeros(b_dims);
+            let c_res = init_strassen_output_matrix(&a, &b);
+            assert!(c_res.is_err(), "Test Failed: {}", desc);
+        }
     }
 }
 
