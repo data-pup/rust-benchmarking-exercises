@@ -10,6 +10,7 @@ pub fn hello_world() -> &'static str {
     return "Hello World!";
 }
 
+/// Multiply two matrices of numeric values, and return the result.
 pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
     where T: Clone + Num + NumOps
 {
@@ -22,17 +23,17 @@ pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
     Ok(c)
 }
 
-pub fn get_curr_cell_value<T>(c_pos:(usize, usize),
+/// Calculate the value of a cell in the output matrix, given the position
+/// coordinates (i, j). Returns an error if the slices of `a` and `b` were
+/// unexpectedly not of the same length.
+fn get_curr_cell_value<T>((i, j):(usize, usize),
                               a:&Matrix<T>, b:&Matrix<T>) -> Result<T, String>
     where T: Clone + Num + NumOps
 {
-    let (i, j) = c_pos;
-    let a_row = a.slice(s![i, ..]);
-    let b_col = b.slice(s![.., j]);
+    let (a_row, b_col) = (a.slice(s![i, ..]), b.slice(s![.., j]));
     let elem_count = match a_row.len() == b_col.len() {
         true => a_row.len(),
-        false => return Err(
-            "Dimension error while multiplying slices.".to_owned()),
+        false => return Err("Dimension error while multiplying slices.".to_owned()),
     };
     let result = (0..elem_count)
         .map(|index| a_row[index].clone() * b_col[index].clone())
@@ -40,6 +41,8 @@ pub fn get_curr_cell_value<T>(c_pos:(usize, usize),
     Ok(result)
 }
 
+/// Initialize the output matrix. If there was a dimension problem with the
+/// inputs, returns an Err. Otherwise, a new matrix filled with zeros is created.
 fn init_output_matrix<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
     where T: Clone + Num
 {
@@ -49,6 +52,7 @@ fn init_output_matrix<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String
     return Ok(m);
 }
 
+/// Get the dimensions of the output matrix, given the dimensions of `a` and `b`.
 fn get_output_dims(a:MatrixDimensions, b:MatrixDimensions)
     -> Result<MatrixDimensions, String>
 {

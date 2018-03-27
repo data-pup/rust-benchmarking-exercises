@@ -98,6 +98,26 @@ To do ...
 
 ## Lessons, Discoveries
 
+### The ? Operator
+
+When dealing with `Result<T, E>` objects in a function that also returns a
+`Result`, match statements that look like this become very common.
+
+```rust
+let foo = match do_something() {
+    Ok(res) => result
+    Err(err) => return Err(err);
+};
+```
+
+We can accomplish the same task using the `?` operator. This helps keep code
+concise without sacrificing the ability to correctly handle an error, passing
+it up to the original caller. The code above could instead be written as:
+
+```rust
+let foo = do_something()?;
+```
+
 ### Crates Ecosystem
 
 For matrix multiplication, I found a nice crate online that offered
