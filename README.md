@@ -42,13 +42,12 @@ large number of operations to produce a result. There are some well known
 optimizations to this process that we can implement, and compare against
 the naive matrix multiplication algorithm.
 
-We will write a small matrix multiplication library, that accepts two matrices
+We will write a small matrix multiplication solution, that accepts two matrices
 filled with numbers, and produces the product in the form of a new matrix.
-Two matrix multiplication logic modules will be implemented, one using a
-naive implementation, and another using an optimized matrix multiplication
-algorithm.
+Our implementation will follow the naive algorithm to find a solution.
 
-Once this is built, we will benchmark the performance of the two alternatives.
+Once this is complete, we will test it against the implementation included in
+an open source library, and compare the performance of the two.
 
 ## Naive Implementation of Matrix Multiplication
 
@@ -175,15 +174,10 @@ pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
 }
 ```
 
-There are some implementation details that could look different, and could
-certainly be optimized further, but this is a learning project after all, and
-we can give things another go with the next implementation we are tackling.
-In the next section, we will build an optimized matrix multiplication algorithm.
+This is not a fully optimal implementation of matrix implementation, and in
+the next section we will discuss how a more effective implementation works.
 
 ## The Strassen Algorithm
-
-We will next implement the Strassen algorithm, and benchmark this implementation
-against the naive implementation that we build in the previous section.
 
 ### Overview
 
@@ -235,9 +229,15 @@ the matrices A and B to be square, and have height and width equal to a power
 of two. If the input matrices do not match these conditions, they will be
 padded with zeros.
 
-Technically, this algorithm can be implemented to avoid these requirements, but
-for simplicity we will follow this rule and keep both padding and these
-workarounds out of the scope of this project.
+NOTE: This is only intended to be a brief example of what optimized matrix
+operations can look like.
+
+## Benchmarking
+
+The ndarray crate can perform matrix multiplication, and it is probably faster
+than our implementation. However, sometimes we would like to know for sure that
+a different implementation to a problem is more effective, so benchmarking code
+can be used to prove this.
 
 ## Lessons, Discoveries
 
