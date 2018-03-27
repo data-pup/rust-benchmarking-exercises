@@ -14,7 +14,7 @@ pub fn init_output_matrix<T>(a:&Matrix<T>, b:&Matrix<T>)
     let (a_dims, b_dims) = (a.dim(), b.dim());
     let dimensions:MatrixDimensions = get_output_dims(a_dims, b_dims)?;
     let m:Matrix<T> = Array::<T, _>::zeros(dimensions);
-    return Ok(m);
+    Ok(m)
 }
 
 /// Get the dimensions of the output matrix, given the dimensions of `a` and `b`.
