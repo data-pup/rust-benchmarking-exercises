@@ -1,4 +1,4 @@
-#[macro_use(array)]
+#[macro_use(array, s)]
 extern crate ndarray;
 extern crate num_traits;
 

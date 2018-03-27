@@ -1,5 +1,5 @@
-use ndarray::{Array, Array2};
-use num_traits::Num;
+use ndarray::prelude::*;
+use num_traits::{Num, NumOps};
 
 use std::clone::Clone;
 
@@ -11,10 +11,33 @@ pub fn hello_world() -> &'static str {
 }
 
 pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
-    where T: Clone + Num
+    where T: Clone + Num + NumOps
 {
-    let mut c = init_output_matrix(&a, &b);
-    unimplemented!() // FIXUP
+    let mut c:Matrix<T> = init_output_matrix(&a, &b)?;
+    for i in 0..c.rows() {
+        for j in 0..c.cols() {
+            c[[i, j]] = get_curr_cell_value((i, i), a, b)?;
+        }
+    }
+    Ok(c)
+}
+
+pub fn get_curr_cell_value<T>(c_pos:(usize, usize),
+                              a:&Matrix<T>, b:&Matrix<T>) -> Result<T, String>
+    where T: Clone + Num + NumOps
+{
+    let (i, j) = c_pos;
+    let a_row = a.slice(s![i, ..]);
+    let b_col = b.slice(s![.., j]);
+    let elem_count = match a_row.len() == b_col.len() {
+        true => a_row.len(),
+        false => return Err(
+            "Dimension error while multiplying slices.".to_owned()),
+    };
+    let result = (0..elem_count)
+        .map(|index| a_row[index].clone() * b_col[index].clone())
+        .fold(T::zero(), |acc, elem| acc + elem);
+    Ok(result)
 }
 
 fn init_output_matrix<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
@@ -66,19 +89,30 @@ mod tests {
     }
 
     #[test]
-    fn it_works() {
-        let a = array![[0, 1],
-                       [2, 3]];
-        let b = array![[0, 1],
-                       [2, 3]];
-        let c = multiply(&a, &b);
+    fn multiply_test() {
+        let a = array![
+            [0, 1],
+            [1, 2],
+            [2, 3],
+        ];
+        let b = array![
+            [0, 1, 2],
+            [2, 4, 8],
+        ];
+        let expected_c = array![
+            [2, 4, 8 ],
+            [4, 9, 18],
+            [6, 14, 28],
+        ];
+        let actual_c = multiply(&a, &b).unwrap();
+        assert_eq!(actual_c, expected_c);
     }
 }
 
 #[allow(dead_code)]
 #[cfg(test)]
 mod test_cases {
-    use multiply_naive::MatrixDimensions;
+    use multiply_naive::{Matrix, MatrixDimensions};
 
     pub struct ValidDimensionsTestCase {
         pub a_dims:MatrixDimensions,
@@ -105,4 +139,30 @@ mod test_cases {
         ((1, 2), (1, 2)),
         ((2, 1), (2, 2)),
     ];
+
+    pub struct MultiplyTestCase<T> {
+        pub a:Matrix<T>,
+        pub b:Matrix<T>,
+        pub expected_c:Matrix<T>,
+    }
+
+    // TODO: Fixup, the array! macro does not work within static variables.
+    // pub static MULTIPLY_TESTS:[MultiplyTestCase<u32>; 1] = [
+    //     MultiplyTestCase {
+    //         a: array![
+    //             [0, 1],
+    //             [1, 2],
+    //             [2, 3],
+    //         ],
+    //         b: array![
+    //             [0, 1, 2],
+    //             [2, 4, 8],
+    //         ],
+    //         expected_c: array![
+    //             [2, 4, 8 ],
+    //             [4, 9, 18],
+    //             [6, 14, 28],
+    //         ],
+    //     }
+    // ];
 }
