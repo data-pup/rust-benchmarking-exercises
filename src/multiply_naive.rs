@@ -88,6 +88,7 @@ mod tests {
         }
     }
 
+
     #[test]
     fn multiply_test() {
         let a = array![
@@ -139,30 +140,4 @@ mod test_cases {
         ((1, 2), (1, 2)),
         ((2, 1), (2, 2)),
     ];
-
-    pub struct MultiplyTestCase<T> {
-        pub a:Matrix<T>,
-        pub b:Matrix<T>,
-        pub expected_c:Matrix<T>,
-    }
-
-    // TODO: Fixup, the array! macro does not work within static variables.
-    // pub static MULTIPLY_TESTS:[MultiplyTestCase<u32>; 1] = [
-    //     MultiplyTestCase {
-    //         a: array![
-    //             [0, 1],
-    //             [1, 2],
-    //             [2, 3],
-    //         ],
-    //         b: array![
-    //             [0, 1, 2],
-    //             [2, 4, 8],
-    //         ],
-    //         expected_c: array![
-    //             [2, 4, 8 ],
-    //             [4, 9, 18],
-    //             [6, 14, 28],
-    //         ],
-    //     }
-    // ];
 }
