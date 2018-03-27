@@ -61,7 +61,7 @@ mod test_cases {
         pub b_dims:MatrixDimensions,
     }
 
-    pub static INVALID_DIMENSIONS:[InvalidDimensionsTestCase; 2] = [
+    pub static INVALID_DIMENSIONS:[InvalidDimensionsTestCase; 3] = [
         InvalidDimensionsTestCase {
             desc:"Non-square matrices eligible for standard algorithm",
             a_dims:(1, 2), b_dims:(2, 1),
@@ -69,6 +69,10 @@ mod test_cases {
         InvalidDimensionsTestCase {
             desc:"Mismatched dimensions should not be accepted",
             a_dims:(2, 1), b_dims:(2, 2),
+        },
+        InvalidDimensionsTestCase {
+            desc:"Matching square matrices must be of size 2^n",
+            a_dims:(9, 9), b_dims:(9, 9),
         },
     ];
 }
