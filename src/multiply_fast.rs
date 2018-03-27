@@ -33,3 +33,35 @@ fn init_strassen_output_matrix<T>(a:&Matrix<T>, b:&Matrix<T>)
     let m:Matrix<T> = Array::<T, _>::zeros(dimensions);
     Ok(m)
 }
+
+#[cfg(test)]
+mod tests {
+    use multiply_fast::*;
+    #[test]
+    fn placeholder() {
+        unimplemented!("Test not implemented yet!");
+    }
+}
+
+#[allow(dead_code)]
+#[cfg(test)]
+mod test_cases {
+    use multiply_utils::{MatrixDimensions};
+
+    pub struct InvalidDimensionsTestCase {
+        pub desc:&'static str,
+        pub a_dims:MatrixDimensions,
+        pub b_dims:MatrixDimensions,
+    }
+
+    pub static INVALID_DIMENSIONS:[InvalidDimensionsTestCase; 2] = [
+        InvalidDimensionsTestCase {
+            desc:"Non-square matrices eligible for standard algorithm",
+            a_dims:(1, 2), b_dims:(2, 1),
+        },
+        InvalidDimensionsTestCase {
+            desc:"Mismatched dimensions should not be accepted",
+            a_dims:(2, 1), b_dims:(2, 2),
+        },
+    ];
+}

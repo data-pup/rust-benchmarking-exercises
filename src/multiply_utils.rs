@@ -90,13 +90,7 @@ mod test_cases {
     }
 
     pub static MISMATCHED_DIMENSIONS:[InvalidDimensionsTestCase; 2] = [
-        InvalidDimensionsTestCase {
-            a_dims:(1, 2),
-            b_dims:(1, 2),
-        },
-        InvalidDimensionsTestCase {
-            a_dims:(2, 1),
-            b_dims:(2, 2),
-        },
+        InvalidDimensionsTestCase { a_dims:(1, 2), b_dims:(1, 2) },
+        InvalidDimensionsTestCase { a_dims:(2, 1), b_dims:(2, 2) },
     ];
 }
