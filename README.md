@@ -236,7 +236,8 @@ of two. If the input matrices do not match these conditions, they will be
 padded with zeros.
 
 Technically, this algorithm can be implemented to avoid these requirements, but
-for simplicity we will follow the padding rule.
+for simplicity we will follow this rule and keep both padding and these
+workarounds out of the scope of this project.
 
 ## Lessons, Discoveries
 
