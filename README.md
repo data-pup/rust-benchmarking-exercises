@@ -174,8 +174,96 @@ pub fn multiply<T>(a:&Matrix<T>, b:&Matrix<T>) -> Result<Matrix<T>, String>
 }
 ```
 
-This is not a fully optimal implementation of matrix implementation, and in
-the next section we will discuss how a more effective implementation works.
+This is not a fully optimal implementation of matrix implementation, we will
+cover how a more effective algorithm functions later in this writeup.
+
+## Benchmarking
+
+The ndarray crate can perform matrix multiplication, and it is probably faster
+than our implementation. However, sometimes we would like to know for sure that
+a different implementation to a problem is more effective, so benchmarking code
+can be used to prove this.
+
+You can find documentation on benchmark tests here:
+https://doc.rust-lang.org/1.12.0/book/benchmark-tests.html
+
+We can place benches in a `benches/` directory in the project root. First,
+we will enable the experimentatal testing features by adding these to our
+benchmarking file.
+
+```
+#![feature(test)]
+extern crate test;
+```
+
+Functions tagged with `#[bench]` contain code that will be benchmarked. A
+helpful trick is that you can use the `test::black_box` function in order to
+set up arguments that you may need to pass to the code that you are
+benchmarking. I wrote a function to compare the simple code that I wrote to
+the ndarray library's own matrix multiplication implementation. That looked
+like this:
+
+```rust
+#[bench]
+fn naive_multiply_bench(bencher: &mut test::Bencher) {
+    let a = Array::<i32, _>::zeros((64, 64));
+    let b = Array::<i32, _>::zeros((64, 64));
+    black_box(&a);
+    black_box(&b);
+    bencher.iter(|| {
+        multiply(&a, &b)
+    });
+}
+
+#[bench]
+fn ndarray_multiply_bench(bencher: &mut test::Bencher) {
+    let a = Array::<i32, _>::zeros((64, 64));
+    let b = Array::<i32, _>::zeros((64, 64));
+    black_box(&a);
+    black_box(&b);
+    bencher.iter(|| {
+        a.dot(&b)
+    });
+}
+```
+
+The `.iter(...)` method contains the code that should actually be benchmarked.
+That accepts a closure as a parameter, and we can use the items passed in
+using the `black_box` function above inside of that closure. The next step
+is to run the benchmarks, by running `cargo bench` in the terminal.
+
+```
+✨  cargo bench
+   Compiling rust_benchmarking_exercise v0.1.0 (file:///home/user/Projects/rust-benchmarking-exercise)
+    Finished release [optimized] target(s) in 1.61 secs
+     Running target/release/deps/rust_benchmarking_exercise-1b51fdaabaa47fef
+
+running 2 tests
+test multiply_utils::tests::mismatched_dims_causes_error ... ignored
+test multiply_utils::tests::output_dimensions_are_correct ... ignored
+
+test result: ok. 0 passed; 0 failed; 2 ignored; 0 measured; 0 filtered out
+
+     Running target/release/deps/multiply_bench-01b2d7fbddbc8b39
+
+running 2 tests
+test naive_multiply_bench   ... bench:     499,993 ns/iter (+/- 30,836)
+test ndarray_multiply_bench ... bench:     166,533 ns/iter (+/- 11,058)
+
+test result: ok. 0 passed; 0 failed; 0 ignored; 2 measured; 0 filtered out
+```
+
+Test methods that are not tagged as benches are ignored, and the benches that
+we just implemented were timed. As expected, our naive implementation does
+not perform as well as the library implementation! Another nice note is that
+because the bencher runs the code a number of times, we can also see how
+variant the performance is. Not only is the library implementation faster, but
+its performance is also much more consistent!
+
+To wrap up, we will review how an optimized matrix multiplication algorithm
+works. This is also a nice exercise in understanding why it is often a good
+idea to rely on library code to accomplish certain tasks, so that we do not
+need to implement this complex logic ourselves.
 
 ## The Strassen Algorithm
 
@@ -232,18 +320,6 @@ padded with zeros.
 NOTE: This is only intended to be a brief example of what optimized matrix
 operations can look like.
 
-## Benchmarking
-
-The ndarray crate can perform matrix multiplication, and it is probably faster
-than our implementation. However, sometimes we would like to know for sure that
-a different implementation to a problem is more effective, so benchmarking code
-can be used to prove this.
-
-You can find documentation on benchmark tests here:
-https://doc.rust-lang.org/1.12.0/book/benchmark-tests.html
-
-```
-```
 
 ## Lessons, Discoveries
 
