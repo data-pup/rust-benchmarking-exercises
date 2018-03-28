@@ -1,7 +1,9 @@
-#[macro_use(array, s)]
+#![feature(test)]
+extern crate test;
+
+#[macro_use(s)]
 extern crate ndarray;
 extern crate num_traits;
 
 pub mod multiply_naive;
-pub mod multiply_fast;
 mod multiply_utils;

@@ -239,6 +239,12 @@ than our implementation. However, sometimes we would like to know for sure that
 a different implementation to a problem is more effective, so benchmarking code
 can be used to prove this.
 
+You can find documentation on benchmark tests here:
+https://doc.rust-lang.org/1.12.0/book/benchmark-tests.html
+
+```
+```
+
 ## Lessons, Discoveries
 
 ### The ? Operator
